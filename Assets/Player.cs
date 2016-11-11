@@ -23,24 +23,7 @@ public class Player : MonoBehaviour
 
 
 
-        //Déplacement du joueur dasn l'espace(Ici, un cube)
-        /* if (Input.GetKey(KeyCode.Q))
-         {
-             transform.position -= new Vector3(1f * Time.deltaTime, 0, 0);
-         }
-         if (Input.GetKey(KeyCode.D))
-         {
-             transform.position += new Vector3(1f * Time.deltaTime, 0, 0);
-         }
-         if (Input.GetKey(KeyCode.Z))
-         {
-             transform.position += new Vector3(0, 1f * Time.deltaTime, 0);
-         }
-         if (Input.GetKey(KeyCode.S))
-         {
-             transform.position -= new Vector3(0, 1f * Time.deltaTime, 0);
-         }
-         transform.position += new Vector3(0, 0, 1f * Time.deltaTime); */
+
 
         float checkposx;
         float checkposy;
@@ -49,60 +32,59 @@ public class Player : MonoBehaviour
         checkposy = transform.position.y;
         checkposz = transform.position.z;
 
-        /* if (Input.GetKeyUp(KeyCode.Q))
-         {
-             if (checkposx != -5)
-                 transform.position -= new Vector3(5, 0, 0);
-
-         }
-         if (Input.GetKeyUp(KeyCode.D))
-         {
-             if (checkposx != 5)
-                 transform.position += new Vector3(5, 0, 0);
+        if (Input.GetKeyUp(KeyCode.Q))
         {
-         }
-         if (Input.GetKeyUp(KeyCode.Z))
-         {
-             if (checkposy != 10)
-                 transform.position += new Vector3(0, 5, 0);
-         }
-         if (Input.GetKeyUp(KeyCode.S))
-         {
-             if (checkposy != 0)
-                 transform.position -= new Vector3(0, 5, 0);
-         }
-         transform.position += new Vector3(0, 0, 5f * Time.deltaTime); */
-
-
-
-       
-
-
-        if (Input.GetKey(KeyCode.Q))
+            StartCoroutine(smoothleft());
+        }
+        if (Input.GetKeyUp(KeyCode.D))
         {
-            if (checkposx > -3)
-                transform.position -= new Vector3(10f * Time.deltaTime, 0, 0);
+            if (checkposx != 5)
+                transform.position += new Vector3(5, 0, 0);
+            
+            }
+            if (Input.GetKeyUp(KeyCode.Z))
+            {
+                if (checkposy != 10)
+                    transform.position += new Vector3(0, 5, 0);
+            }
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                if (checkposy != 0)
+                    transform.position -= new Vector3(0, 5, 0);
+            }
+
+        
+
+
+
+
+            transform.position += new Vector3(0, 0, 5f * Time.deltaTime);
+
+
+
+
+
+        
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.transform.tag == "mur")
+        {
+            transform.position = new Vector3(0, 2, 0);
+        }
+    }
+    IEnumerator smoothleft()
+    {
+        Vector3 starpos = transform.position;
+        Vector3 Endpos = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
+        float i = 0;
+        while (i < 1)
+        {
+            transform.position = Vector3.Lerp(starpos, Endpos,Mathf.SmoothStep(0,1,i) );
+            i += Time.deltaTime * 7;
+            yield return null;
 
         }
-        if (Input.GetKey(KeyCode.D))
-        {
-            if (checkposx < 3)
-                transform.position += new Vector3(10f * Time.deltaTime, 0, 0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-
-        {
-            transform.position += new Vector3(0, 100f * Time.deltaTime, 0);
-        }
-
-
-
-        transform.position += new Vector3(0, 0, 5f * Time.deltaTime);
-
-
-
-
-
     }
 }
