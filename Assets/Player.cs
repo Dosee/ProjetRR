@@ -8,13 +8,14 @@ public class Player : MonoBehaviour
     public int speed = 4; // Vitesse déplacement
     public int jumpPower = 350; // Puissance saut
     private bool canJump = true; // Peut on sauter ?
+    Rigidbody body;
 
     
 
     // Use this for initialization
     void Start()    
     {
-
+        body = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -40,10 +41,9 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(smoothright());
         }
-            if (Input.GetKeyUp(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Space))
             {
-                if (checkposy != 10)
-                    transform.position += new Vector3(0, 5, 0);
+            jump();
             }
             
 
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
 
 
 
-            transform.position += new Vector3(0, 0, 5f * Time.deltaTime);
+            transform.position += new Vector3(0, 0, 10f * Time.deltaTime);
 
 
 
@@ -93,6 +93,11 @@ public class Player : MonoBehaviour
             yield return null;
 
         }
+    }
+    void jump()
+    {
+        body.AddForce(0, jumpPower, 0, ForceMode.Impulse);
+        print("coco");
     }
 }
 
